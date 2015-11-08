@@ -12,47 +12,63 @@ purple = (138,43,226)
 
 clock = pygame.time.Clock()
  
-def detectCollisions(x11, y11, x12, y12, w1, x21, y21, x22, y22, w2):
+# def detectCollisions(x11, y11, x12, y12, w1, x21, y21, x22, y22, w2):
+#
+#     # if (x2+w2>=x1>=x2 and y2+h2>=y1>=y2):
+#     #     return True
+#     #
+#     # elif (x2+w2>=x1+w1>=x2 and y2+h2>=y1>=y2):
+#     #     return True
+#     #
+#     # elif (x2+w2>=x1>=x2 and y2+h2>=y1+h1>=y2):
+#     #     return True
+#     #
+#     # elif (x2+w2>=x1+w1>=x2 and y2+h2>=y1+h1>=y2):
+#     #     return True
+#
+#     # else:
+#         return False
  
-    # if (x2+w2>=x1>=x2 and y2+h2>=y1>=y2):
-    #     return True
-    #
-    # elif (x2+w2>=x1+w1>=x2 and y2+h2>=y1>=y2):
-    #     return True
-    #
-    # elif (x2+w2>=x1>=x2 and y2+h2>=y1+h1>=y2):
-    #     return True
-    #
-    # elif (x2+w2>=x1+w1>=x2 and y2+h2>=y1+h1>=y2):
-    #     return True
- 
-    # else:
-        return False
- 
-class Sprite:
- 
+# class Sprite:
+#
+#     def __init__(self, x1, y1, x2, y2, width):
+#         self.x1=x1
+#         self.y1=y1
+#         self.x2=x2
+#         self.y2=y2
+#         self.width=width
+#
+#     def render(self,collision):
+#         if (collision==True):
+#             pygame.draw.line(window, purple, [self.x1, self.y1], [self.x2,self.y2], self.width)
+#
+#         else:
+#             pygame.draw.line(window, purple, [self.x1, self.y1], [self.x2,self.y2], self.width)
+#
+
+class Side(pygame.sprite.Sprite):
     def __init__(self, x1, y1, x2, y2, width):
         self.x1=x1
         self.y1=y1
         self.x2=x2
         self.y2=y2
         self.width=width
- 
-    def render(self,collision):
-        if (collision==True):
-            pygame.draw.line(window, purple, [self.x1, self.y1], [self.x2,self.y2], self.width)
 
-        else:
-            pygame.draw.line(window, purple, [self.x1, self.y1], [self.x2,self.y2], self.width)
- 
-north=Sprite(350, 45, 200, 305, 20)
-nEast=Sprite(800, 305, 650, 565, 20)
-sEast=Sprite(650, 45, 800, 305, 20)
-south=Sprite(350, 45, 650, 45, 20)
-sWest=Sprite(350, 565, 650, 565, 20)
-nWest=Sprite(200, 305, 350, 565, 20)
+north=Side(350, 45, 200, 305, 20)
+nEast=Side(800, 305, 650, 565, 20)
+sEast=Side(650, 45, 800, 305, 20)
+south=Side(350, 45, 650, 45, 20)
+sWest=Side(350, 565, 650, 565, 20)
+nWest=Side(200, 305, 350, 565, 20)
 
-bouncy = Sprite(500, 535, 505, 535, 5)
+
+class Bouncy(pygame.sprite.Sprite):
+    def __init__(self, center, radius, width = 0):
+        self.center = center
+        self.radius = radius
+
+
+bouncy = Bouncy(500, 535, 10)
  
 moveX,moveY=0,0
  
@@ -93,12 +109,14 @@ while gameLoop:
  
     window.fill(grey)
  
-    north.x1+=moveX
-    north.y1+=moveY
+    north.x1 += moveX
+    north.y1 += moveY
  
-    collisions=detectCollisions(north.x1, north.y1, north.x2, north.y2, north.width, nEast.x1, nEast.y1, nEast.x2, nEast.y2, nEast.width)
+    # collisions=detectCollisions(north.x1, north.y1, north.x2, north.y2, north.width, nEast.x1, nEast.y1, nEast.x2, nEast.y2, nEast.width)
 
-    north.render(collisions)
+    collision = pygame.sprite.collide_rect()
+
+    north.render(collision)
     nEast.render(False)
     sEast.render(False)
     south.render(False)
